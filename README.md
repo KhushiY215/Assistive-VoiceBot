@@ -1,135 +1,194 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure API Key Management</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        h2 { color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 25px; }
-        h3 { color: #555; margin-top: 20px; }
-        code { background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-size: 0.9em; }
-        pre { background-color: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
-        ul { list-style: disc; margin-left: 20px; }
-        .warning { border: 1px solid #ffcc00; background-color: #fffacd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
 
-    <h1>&#x1F510; Secure API Key Management in Projects</h1>
+````markdown
+#  Assistive VoiceBot for the Visually Impaired
 
-    <p>This guide demonstrates <strong>how to safely use API keys</strong> in your Python, Node.js, or other projects <strong>without exposing them publicly</strong> on GitHub.</p>
+An intelligent **voice-based assistant** designed to help visually impaired users interact with their computer using **speech recognition, text-to-speech, and natural commands**.  
+This bot can **tell the time/date, read PDFs aloud (including scanned ones via OCR), fetch live weather and news, and set reminders — all through voice.**
 
-    <hr>
+---
 
-    <h2 id="why-you-should-never-upload-api-keys">&#x1F6AB; Why You Should Never Upload API Keys</h2>
+## ✨ Features
 
-    <p>API keys are <strong>confidential credentials</strong> that identify your account to external services (like OpenAI, Google Cloud, AWS, etc.).<br>
-    Uploading them publicly can lead to:</p>
+- 🎧 **Voice Interaction:** Speak commands and hear responses (hands-free experience)
+- 🗣️ **Speech Recognition:** Converts user speech into text using Google Web Speech API
+- 🔊 **Text-to-Speech:** Responds using `pyttsx3` (works offline)
+- 🌤️ **Weather Updates:** Fetches current weather using OpenWeather API
+- 📰 **Latest News:** Reads top headlines using NewsData API
+- 📄 **PDF Reader with OCR:** Reads text from PDFs or scanned documents
+- ⏰ **Reminders:** Set spoken reminders after a given number of minutes
+- 🧠 **Error Handling:** Graceful error messages spoken aloud
+- 🧩 **Modular Design:** Each functionality is cleanly separated
 
-    <ul>
-        <li>&#x1F4B8; Unauthorized usage and billing</li>
-        <li>&#x1F6B3; Account suspension or permanent ban</li>
-        <li>&#x1F513; Data theft and security breaches</li>
-    </ul>
+---
 
-    <p>Even if deleted later, <strong>Git history retains old commits</strong>, and bots constantly scan GitHub for leaked keys.</p>
+## 🛠️ Requirements
 
-    <hr>
+### Python Version
+- Python **3.8 or above**
 
-    <h2 id="safe-way-use-environment-variables">&#x2705; Safe Way: Use Environment Variables</h2>
+### Dependencies
+Install all required packages using:
 
-    <p>Instead of hardcoding your API keys (e.g. <code>API_KEY = "abcdef123456"</code>), you should:</p>
-    <ol>
-        <li>Store them in a <strong><code>.env</code> file</strong> (local only)</li>
-        <li>Load them securely in your code</li>
-        <li>Add <code>.env</code> to <strong><code>.gitignore</code></strong> so it’s never uploaded</li>
-    </ol>
+```bash
+pip install -r requirements.txt
+````
 
-    <hr>
+Example `requirements.txt`:
 
-    <h2 id="example-python">&#x1F9E0; Example (Python)</h2>
+```
+sounddevice
+soundfile
+speechrecognition
+pyttsx3
+requests
+pytesseract
+opencv-python
+pdf2image
+PyPDF2
+Pillow
+python-dotenv
+```
 
-    <h3>1. Install <code>python-dotenv</code></h3>
-    <pre><code>pip install python-dotenv</code></pre>
+### System Requirements
 
-    <h3>2. Create a <code>.env</code> file</h3>
-    <pre><code>OPENWEATHER_API_KEY=your_openweather_key_here
-NEWSAPI_KEY=your_newsapi_key_here</code></pre>
+* **Microphone** and **Speakers** (for recording & playback)
+* **Poppler** (for `pdf2image`)
+* **Tesseract OCR** (for reading scanned PDFs)
 
-    <h3>3. Load keys in your code</h3>
-    <pre><code>from dotenv import load_dotenv
-import os
+#### Installing Poppler & Tesseract
 
-load_dotenv()
+**Windows:**
 
-OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
-NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")</code></pre>
+* [Poppler for Windows](https://github.com/oschwartz10612/poppler-windows/releases/)
+* [Tesseract OCR](https://github.com/UB-Mannheim/tesseract/wiki)
 
-    <h3>4. Add <code>.env</code> to <code>.gitignore</code></h3>
-    <pre><code># .gitignore
-.env</code></pre>
+Add both to your **PATH** environment variable.
 
-    <hr>
+**Linux / macOS:**
 
-    <h2 id="example-nodejs">&#x1F9E0; Example (Node.js)</h2>
+```bash
+sudo apt install poppler-utils tesseract-ocr
+```
 
-    <h3>1. Install <code>dotenv</code></h3>
-    <pre><code>npm install dotenv</code></pre>
+---
 
-    <h3>2. Create <code>.env</code> file</h3>
-    <pre><code>OPENAI_API_KEY=your_openai_key_here</code></pre>
+## 🔑 Environment Variables
 
-    <h3>3. Load keys in your app</h3>
-    <pre><code>require('dotenv').config();
+Create a `.env` file in the same folder as the script:
 
-const apiKey = process.env.OPENAI_API_KEY;</code></pre>
+```
+OPENWEATHER_API_KEY=your_openweather_api_key_here
+NEWSAPI_KEY=your_newsapi_key_here
+```
 
-    <hr>
+> ⚠️ Do **not** commit your `.env` file to GitHub. It contains private API keys.
 
-    <h2 id="folder-structure-example">&#x1F9EB; Folder Structure Example</h2>
+---
 
-    <pre><code>project/
-&#9475;
-&#9499;&#9472;&#9472; app.py
-&#9499;&#9472;&#9472; .env
-&#9499;&#9472;&#9472; .gitignore
-&#9499;&#9472;&#9472; README.md</code></pre>
+## 🚀 Usage
 
-    <hr>
+1. **Run the program:**
 
-    <h2 id="extra-security-tips">&#x1F6A7; Extra Security Tips</h2>
+   ```bash
+   python voicebot.py
+   ```
 
-    <ul>
-        <li>Rotate (regenerate) your API keys regularly.</li>
-        <li>Use separate keys for <strong>development</strong> and <strong>production</strong>.</li>
-        <li>Never share screenshots or logs showing your keys.</li>
-        <li>If you accidentally commit a key, <strong>revoke it immediately</strong> from the provider’s dashboard.</li>
-    </ul>
+2. **Wait for the prompt:**
 
-    <hr>
+   ```
+   VoiceBot ready. Press Enter to start speaking.
+   ```
 
-    <h2 id="useful-references">&#x1F4DA; Useful References</h2>
+3. **Press Enter**, then **speak your command**.
 
-    <ul>
-        <li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">GitHub Docs: Removing sensitive data</a></li>
-        <li><a href="https://blog.postman.com/how-to-securely-use-api-keys/">12 Best Practices for API Key Security (Postman Blog)</a></li>
-        <li><a href="https://github.com/motdotla/dotenv">dotenv GitHub Repository</a></li>
-    </ul>
+---
 
-    <hr>
+## 🗣️ Supported Commands
 
-    <p><strong>Remember:</strong></p>
+| Command Example                 | Action Performed                                          |
+| ------------------------------- | --------------------------------------------------------- |
+| "What time is it?"              | Speaks current time                                       |
+| "What's today's date?"          | Speaks current date                                       |
+| "What's the weather in London?" | Reads current weather for the specified city              |
+| "Read the PDF document"         | Reads aloud the text or scanned content from `sample.pdf` |
+| "Read the document sample.pdf"  | Reads the specified PDF file                              |
+| "Give me the news"              | Reads top news headlines                                  |
+| "Remind me to take medicine"    | Asks for reminder time, then speaks reminder later        |
+| "Stop" or "Exit"                | Quits the assistant safely                                |
 
-    <blockquote>
-        <em>Treat your API keys like passwords — never expose them publicly.</em>
-    </blockquote>
+---
 
-    <hr>
+## 📚 Example Interaction
 
-    <p><strong>Author:</strong> [Your Name]<br>
-    <strong>License:</strong> MIT</p>
+```
+Bot: VoiceBot ready. Press Enter to start speaking.
 
-</body>
-</html>
+Press Enter to record...
+You: What is the weather in Chennai?
+Bot: Weather in Chennai: clear sky, 30.2 degrees Celsius.
+
+Press Enter to record...
+You: Read the PDF document.
+Bot: Reading text from PDF... The document contains: "This agreement is made and entered into..."
+```
+
+---
+
+## 🧩 File Structure
+
+```
+voicebot/
+│
+├── main.py           # Main program file
+├── .env                  # Environment file (API keys)
+└── sample.pdf            # Example document (optional)
+```
+
+---
+
+## 🧠 How It Works
+
+1. **Recording:** Captures voice via `sounddevice` and saves as `.wav`.
+2. **Speech Recognition:** Converts audio to text using Google Web Speech.
+3. **Command Parsing:** Detects intent (time, weather, news, etc.).
+4. **Action Execution:** Calls the respective handler (API, PDF read, reminder).
+5. **Speech Output:** Speaks results via `pyttsx3`.
+
+---
+
+## 🧰 Troubleshooting
+
+| Issue                                    | Possible Cause           | Fix                                    |
+| ---------------------------------------- | ------------------------ | -------------------------------------- |
+| "Speech recognition service unavailable" | No internet or API issue | Check your network connection          |
+| "Weather service not configured"         | Missing API key          | Add your OpenWeather API key to `.env` |
+| "I couldn't record audio"                | No mic permission        | Enable microphone access               |
+| OCR not working                          | Missing Tesseract        | Install and add Tesseract to PATH      |
+| PDF reading fails                        | Missing Poppler          | Install Poppler utilities              |
+
+---
+
+## 👥 Contributors
+
+* **You!**
+  Feel free to improve and extend this assistant — add new commands, better NLP, or UI integration.
+
+---
+
+## 🪪 License
+
+This project is released under the **MIT License**.
+You are free to modify and distribute it for personal or educational use.
+
+---
+
+## 💬 Acknowledgements
+
+* [SpeechRecognition](https://pypi.org/project/SpeechRecognition/)
+* [pyttsx3](https://pypi.org/project/pyttsx3/)
+* [OpenWeather API](https://openweathermap.org/api)
+* [NewsData API](https://newsdata.io/)
+* [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+* [Poppler](https://poppler.freedesktop.org/)
+
+```
