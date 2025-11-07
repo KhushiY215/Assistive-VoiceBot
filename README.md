@@ -1,5 +1,5 @@
 
-````markdown
+
 #  Assistive VoiceBot for the Visually Impaired
 
 An intelligent **voice-based assistant** designed to help visually impaired users interact with their computer using **speech recognition, text-to-speech, and natural commands**.  
