@@ -190,5 +190,4 @@ You are free to modify and distribute it for personal or educational use.
 * [NewsData API](https://newsdata.io/)
 * [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 * [Poppler](https://poppler.freedesktop.org/)
-
 ```
