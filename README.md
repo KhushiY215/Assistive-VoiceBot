@@ -81,10 +81,6 @@ OPENWEATHER_API_KEY=your_openweather_api_key_here
 NEWSAPI_KEY=your_newsapi_key_here
 ```
 
-> ⚠️ Do **not** commit your `.env` file to GitHub. It contains private API keys.
-
----
-
 ## 🚀 Usage
 
 1. **Run the program:**
